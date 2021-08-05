@@ -16,11 +16,11 @@ def create_image_for_model(pass_obj):
 
 
 class Base_model():
+
     def __init__(self, init_x, init_y, canv, root, example_models, path_to_image_model):
         self.canv = canv
         self.root = root
         self.list_example = ttk.Combobox(self.root, values = example_models,state="readonly")
-        self.list_example.current(0)
         self.list_example.current(0)
         self.image_model_data = create_image_for_model(path_to_image_model)
         self.image_width = self.image_model_data.width()
@@ -30,3 +30,21 @@ class Base_model():
         self.x = init_x
         self.y = init_y
         self.image_model = self.canv.create_image(self.x,self.y,image = self.image_model_data, anchor = 'nw')
+
+        self.state_click = 0 #
+
+    def set_state_click(self, m_x, m_y):
+        self.k_click = 0.1
+        if ((m_x >= self.x + self.k_click*self.image_width) and (m_x <= self.x + self.image_width - self.k_click*self.image_width) and (m_y >= self.y + self.k_click*self.image_height) and (m_y <= self.y + self.image_height - self.k_click*self.image_height)):
+            if (self.state_click  == 0):
+                self.state_click = 1
+                self.delta_x = m_x - self.x
+                self.delta_y = m_y - self.y
+            else:
+                self.state_click = 0 
+            
+    def move_model(self, m_x, m_y):
+        if (self.state_click  == 1):
+            self.canv.coords(self.image_model, m_x - self.delta_x, m_y - self.delta_y)
+            self.x = m_x - self.delta_x
+            self.y = m_y - self.delta_y
