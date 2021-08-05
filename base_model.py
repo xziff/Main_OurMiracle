@@ -31,7 +31,7 @@ class Base_model():
         self.y = init_y
         self.image_model = self.canv.create_image(self.x,self.y,image = self.image_model_data, anchor = 'nw')
 
-        self.state_click = 0 #
+        self.state_click = 0 ###
 
     def set_state_click(self, m_x, m_y):
         self.k_click = 0.1
